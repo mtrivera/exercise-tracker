@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const db = require('./db/db')
 
 const cors = require('cors')
 
@@ -11,8 +12,14 @@ app.use(express.json())
 app.use(express.static('public'))
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
-});
+})
 
+// GET all users
+app.get('/api/exercise/users', (req, res) => {
+  db.select().from('users').then(users => {
+    res.send(users);
+  })
+})
 
 // Not found middleware
 app.use((req, res, next) => {
