@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const db = require('./db/db')
+const shortid = require('shortid')
 
 const cors = require('cors')
 
@@ -17,7 +18,20 @@ app.get('/', (req, res) => {
 // GET all users
 app.get('/api/exercise/users', (req, res) => {
   db.select().from('users').then(users => {
-    res.send(users);
+    res.send(users)
+  })
+})
+
+// POST new user
+app.post('/api/exercise/new-user', (req, res) => {
+  db('users').insert({
+    username: req.body.username,
+    id: shortid.generate()
+  }).then(() => {
+    db('users').where('username', req.body.username)
+    .then(user => {
+      res.send(user)
+    })
   })
 })
 
