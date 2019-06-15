@@ -1,9 +1,7 @@
-const shortid = require('shortid');
-
 exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.createTable('users', function(table) {
-      table.string('id').primary().defaultTo(shortid.generate());
+      table.string('id').primary().notNullable();
         table.string('username').notNullable();
     }),
     knex.schema.createTable('exercises', function(table) {
